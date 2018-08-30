@@ -1,9 +1,9 @@
 {
-  "name": "panama-lineup",
+  "name": "codercruise",
   "version": "0.1.0",
   "private": true,
   "author": "Konstantin Tieber",
-  "homepage": "https://xkons.github.io/panama-lineup",
+  "homepage": "https://xkons.github.io/codercruise",
   "dependencies": {
     "localforage": "^1.7.2",
     "lodash": "^4.17.10",
