@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Icon, List, Grid, Divider } from 'semantic-ui-react';
+import { Button, Icon, List, Grid, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import './ScheduleItem.css';
 
@@ -29,12 +29,6 @@ class ScheduleItem extends Component {
                                 {this.props.name}
                             </List.Header>
                             {this.props.location ? <List.Description>{this.props.location}</List.Description> : ''}
-                            {this.state.showTalkInfo ?
-                                <List.Description className="scheduleItem__info">
-                                    <Divider hidden />
-                                    {this.props.speaker !== '' ? <p>By <span style={{fontWeight: 'bold'}}>{this.props.speaker}</span></p> : ''}
-                                    {this.props.info}
-                                </List.Description> :''}
                         </List.Content>
                     </Grid.Column>
                     <Grid.Column width={4} style={{maxWidth: 120}} floated="right">
@@ -48,10 +42,15 @@ class ScheduleItem extends Component {
                         </List.Content>
                     </Grid.Column>
                 </Grid>
+                {this.state.showTalkInfo ?
+                    <Segment vertical className="scheduleItem__info">
+                        {this.props.speaker !== '' ? <p>By <span style={{fontWeight: 'bold'}}>{this.props.speaker}</span></p> : ''}
+                        {this.props.info}
+                    </Segment> :''}
             </List.Item>
         )
     }
-};
+}
 
 ScheduleItem.propTypes = {
     id: PropTypes.number.isRequired,
