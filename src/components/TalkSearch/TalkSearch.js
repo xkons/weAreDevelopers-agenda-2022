@@ -2,11 +2,11 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { List, Search } from 'semantic-ui-react';
-import LineUpItem from '../LineUpItem/LineUpItem';
+import ScheduleItem from '../ScheduleItem/ScheduleItem';
 
 // the title parameter is required by the Semantic UI Search component
-const resultPreviewsRenderer = ({ day, time, artist, stage, title }) => (
-  <p key={artist}>{day} {time} <b>{artist}</b><br/>{stage}</p>
+const resultPreviewsRenderer = ({ day, id, time, location, name, title }) => (
+  <p key={id}>{day} {time} <b>{name}</b><br/>{location}</p>
 );
 
 resultPreviewsRenderer.propTypes = {
@@ -17,7 +17,7 @@ resultPreviewsRenderer.propTypes = {
   time: PropTypes.string,
 };
 
-class ArtistSearch extends Component {
+class TalkSearch extends Component {
   /**
    * @param {Object} props
    */
@@ -41,9 +41,9 @@ class ArtistSearch extends Component {
    * @param {array} documents
    */
   _intiliazeSearchIndex = (documents) => {
-    documents.forEach((lineUpItem, position) => {
-      lineUpItem["title"] = lineUpItem.artist;
-      documents[position] = lineUpItem;
+    documents.forEach((talk, position) => {
+      talk["title"] = talk.name;
+      documents[position] = talk;
     });
     return documents;
   };
@@ -51,7 +51,7 @@ class ArtistSearch extends Component {
   /**
    * Is called when the user selects an Item from the previewed results.
    */
-  _handleResultSelect = (e, { result }) => this.setState({ value: result.artist });
+  _handleResultSelect = (e, { result }) => this.setState({ value: result.name });
 
   /**
    * Is called when the search input changes.
@@ -63,7 +63,7 @@ class ArtistSearch extends Component {
       if (this.state.value.length < 1) return this._resetComponent();
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = result => re.test(result.artist);
+      const isMatch = result => re.test(result.name);
 
       this.setState({
         isLoading: false,
@@ -72,8 +72,8 @@ class ArtistSearch extends Component {
     }, 300)
   };
 
-  getLineUpForMatchingArtists = (query) => {
-    return this.searchIndex.filter(lineUpDocument => lineUpDocument.artist.startsWith(query))
+  getTalksForMatchingName = (query) => {
+    return this.searchIndex.filter(talk => talk.name.startsWith(query))
   };
 
   render() {
@@ -90,22 +90,25 @@ class ArtistSearch extends Component {
           value={value}
           selectFirstResult={true}
           input={searchInputProps}
-          placeholder="Künstler suchen"
-          noResultsMessage="Keine Ergebnisse"
+          placeholder="Search talks"
+          noResultsMessage="No results"
           resultRenderer={resultPreviewsRenderer}
         />
         {value === '' ? '' :
           <List relaxed verticalAlign='middle' size="large">
-            {this.getLineUpForMatchingArtists(value).map(lineUpItem =>
-              <LineUpItem 
-                key={lineUpItem.artist}
-                artist={lineUpItem.artist}
-                starred={this.props.starredArtists.includes(lineUpItem.artist)}
-                url={lineUpItem.url}
-                time={lineUpItem.time}
+            {this.getTalksForMatchingName(value).map(talk =>
+              <ScheduleItem
+                key={talk.id}
+                id={talk.id}
+                speaker={talk.speaker}
+                name={talk.name}
+                location={talk.location}
+                starred={this.props.starredTalks.includes(talk.id)}
+                time={talk.time}
                 starHandler={this.props.starHandler} 
-                stage={lineUpItem.stage}
-                day={lineUpItem.day} />)
+                stage={talk.location}
+                day={talk.day}
+                info={talk.info}/>)
             }
           </List>
         }
@@ -114,10 +117,10 @@ class ArtistSearch extends Component {
   }
 }
 
-ArtistSearch.propTypes = {
+TalkSearch.propTypes = {
   source: PropTypes.array.isRequired,
   starHandler: PropTypes.func.isRequired,
-  starredArtists: PropTypes.array.isRequired
+  starredTalks: PropTypes.array.isRequired
 };
 
-export default ArtistSearch;
+export default TalkSearch;

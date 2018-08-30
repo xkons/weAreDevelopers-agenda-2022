@@ -3,66 +3,145 @@ import {
     List,
     Header
 } from 'semantic-ui-react';
-import LineUpItem from '../LineUpItem/LineUpItem';
+import ScheduleItem from '../ScheduleItem/ScheduleItem';
 import PropTypes from 'prop-types';
 
 const Favorites = (props) => {
     if (props.items.length === 0) {
-        return (<p>Keine Favoriten ausgewählt</p>)
+        return (<p>No favorites saved.</p>)
     }
-    
-    const freitagFavorites = props.items
-                                .filter(item => item.day === "Freitag")
-                                .sort((item1, item2) => item1.time > item2.time);
-    const samstagFavorites = props.items
-                                .filter(item => item.day === "Samstag")
-                                .sort((item1, item2) => item1.time > item2.time);
+
+    const thursdayFavorites = props.items.filter(item => item.day === "Thursday"); // no sorting required since there is only one keynote
+    const fridayFavorites = props.items
+                                .filter(item => item.day === "Friday")
+                                .sort((item1, item2) => item1.id > item2.id);
+    const saturdayFavorites = props.items
+                                .filter(item => item.day === "Saturday")
+                                .sort((item1, item2) => item1.id > item2.id);
+    const sundayFavorites = props.items
+                                .filter(item => item.day === "Sunday")
+                                .sort((item1, item2) => item1.id > item2.id);
 
     return (
         <Fragment>
-            {freitagFavorites.length ? 
+            {thursdayFavorites.length ?
                 <Fragment>
-                    <Header as='h2'>Freitag</Header>
+                    <Header as='h2'>Thursday</Header>
                     <List divided relaxed verticalAlign='middle' size="large">
-                        {freitagFavorites.map(timeSlot => (
-                            <LineUpItem 
-                                key={timeSlot.artist}
-                                artist={timeSlot.artist}
+                        {thursdayFavorites.map(talk => (
+                            <ScheduleItem
+                                key={talk.id}
+                                id={talk.id}
+                                speaker={talk.speaker}
+                                name={talk.name}
                                 starred={true}
-                                url={timeSlot.url}
-                                time={timeSlot.time}
+                                time={talk.time}
                                 starHandler={props.removeStarHandler}
-                                stage={timeSlot.stage} />)
+                                location={talk.location}
+                                info={talk.info} />)
+                        )
+                        }
+                    </List>
+                </Fragment>
+                : '' }
+            {fridayFavorites.length ?
+                <Fragment>
+                    <Header as='h2'>Friday</Header>
+                    <List divided relaxed verticalAlign='middle' size="large">
+                        {fridayFavorites.map(talk => (
+                            <ScheduleItem
+                                key={talk.id}
+                                id={talk.id}
+                                speaker={talk.speaker}
+                                name={talk.name}
+                                starred={true}
+                                time={talk.time}
+                                starHandler={props.removeStarHandler}
+                                location={talk.location}
+                                info={talk.info} />)
                             )
                         }
-                    </List> 
+                    </List>
                 </Fragment>
             : '' }
-            {samstagFavorites.length ? 
+            {saturdayFavorites.length ?
                 <Fragment>
-                    <Header as='h2'>Samstag</Header>
+                    <Header as='h2'>Saturday</Header>
                     <List divided relaxed verticalAlign='middle' size="large">
-                        {samstagFavorites.map(timeSlot => (
-                            <LineUpItem 
-                                key={timeSlot.artist}
-                                artist={timeSlot.artist}
+                        {saturdayFavorites.map(talk => (
+                            <ScheduleItem
+                                key={talk.id}
+                                id={talk.id}
+                                speaker={talk.speaker}
+                                name={talk.name}
                                 starred={true}
-                                url={timeSlot.url}
-                                time={timeSlot.time}
+                                time={talk.time}
                                 starHandler={props.removeStarHandler}
-                                stage={timeSlot.stage} />)
+                                location={talk.location}
+                                info={talk.info} />)
                             )
                         }
-                    </List> 
+                    </List>
                 </Fragment>
             : '' }
+            {sundayFavorites.length ?
+                <Fragment>
+                    <Header as='h2'>Sunday</Header>
+                    <List divided relaxed verticalAlign='middle' size="large">
+                        {sundayFavorites.map(talk => (
+                            <ScheduleItem
+                                key={talk.id}
+                                id={talk.id}
+                                speaker={talk.speaker}
+                                name={talk.name}
+                                starred={true}
+                                time={talk.time}
+                                starHandler={props.removeStarHandler}
+                                location={talk.location}
+                                info={talk.info} />)
+                        )
+                        }
+                    </List>
+                </Fragment>
+                : '' }
         </Fragment>
     )
 };
 
 Favorites.propTypes = {
-    items: PropTypes.array.isRequired
+    items: PropTypes.array.isRequired,
+    removeStarHandler: PropTypes.func.isRequired
 };
 
 
 export default Favorites
+
+/**
+ * Notes for Refactoring:
+ * const getFavoriteItemsOnDay = (day, items) => {
+        const filteredItems = items.filter(item => item.day === "Friday").sort((item1, item2) => item1.id > item2.id);
+
+        let listElements = [];
+        filteredItems.forEach((talk) => {
+            listElements.push(<ScheduleItem
+                key={talk.id}
+                id={talk.id}
+                speaker={talk.speaker}
+                name={talk.name}
+                starred={true}
+                time={talk.time}
+                starHandler={props.removeStarHandler}
+                location={talk.location}
+                info={talk.info} />)
+        });
+
+        return listElements;
+    };
+
+ const favorites = props.days.map(day => {
+        let dayFavoritesJsx = [];
+        dayFavoritesJsx.push(<Header as='h2'>{day}</Header>);
+        dayFavoritesJsx.push(<List divided relaxed verticalAlign='middle' size="large">{getFavoriteItemsOnDay(day, props.items)}</List>);
+        return dayFavoritesJsx
+    });
+ */
