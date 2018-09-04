@@ -90,7 +90,7 @@ class TalkSearch extends Component {
           value={value}
           selectFirstResult={true}
           input={searchInputProps}
-          placeholder="Search talks"
+          placeholder="Search by name or speaker"
           noResultsMessage="No results"
           resultRenderer={resultPreviewsRenderer}
         />
