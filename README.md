@@ -1,3 +1,14 @@
+## CoderCruise 2018 Schedule PWA
+
+This project is based on my festival lineup PWA: [https://github.com/xkons/panama-lineup](https://github.com/xkons/panama-lineup)
+
+Features:
+- overview of conference schedule
+- works offline
+- search talks by name or speaker
+- view talk description
+- manage favorites
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
