@@ -63,7 +63,7 @@ class TalkSearch extends Component {
       if (this.state.value.length < 1) return this._resetComponent();
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
-      const isMatch = result => re.test(result.name);
+      const isMatch = result => re.test(result.name + result.speaker);
 
       this.setState({
         isLoading: false,
