@@ -4,12 +4,12 @@
 }
 
 .panama-button {
-  background-color: rgb(118,133,145) !important;
+  background-color: #ff164c !important;
   color: white !important;
 }
 
 .panama-button.active {
-  background-color: rgb(138,153,180) !important;
+  background-color: #b90e36 !important;
 }
 
 .bg-pan-yellow {

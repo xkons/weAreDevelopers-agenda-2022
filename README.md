@@ -1,4 +1,4 @@
-## CoderCruise 2018 Schedule PWA
+## WeAreDevelopers 2022 Schedule PWA
 
 This project is based on my festival lineup PWA: [https://github.com/xkons/panama-lineup](https://github.com/xkons/panama-lineup)
 
